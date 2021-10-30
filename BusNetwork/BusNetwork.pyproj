@@ -21,7 +21,13 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Business\BusNetworkStations.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Business\BusNetworkProcessing.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Business\Station.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BusNetwork.py" />
@@ -31,7 +37,16 @@
     <Compile Include="Tests\TkinterTests.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Windows\AddStationWindow.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Windows\EditStationWindow.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Windows\MainWindow.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Windows\NextStationWindow.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
