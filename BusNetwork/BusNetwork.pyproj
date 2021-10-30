@@ -25,7 +25,13 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BusNetwork.py" />
-    <Compile Include="Tests\BusNetworkTests.py">
+    <Compile Include="Tests\BusNetworkProcessingTests.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tests\TkinterTests.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Windows\MainWindow.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
