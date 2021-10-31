@@ -46,7 +46,7 @@
     <Compile Include="Windows\MainWindow.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Windows\NextStationWindow.py">
+    <Compile Include="Windows\AddNextStationWindow.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

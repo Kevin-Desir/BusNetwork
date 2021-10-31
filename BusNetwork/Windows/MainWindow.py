@@ -94,7 +94,7 @@ class MainWindow(tk.Tk):
             Station(9, "Jumièges", 0, 0, next_stations_9)
         ]
         
-        self.bus_network_stations = BusNetworkStations(stations)
+        self.bus_network_stations.set_stations(stations)
 
         for s in self.bus_network_stations.stations:
             print(s.to_string())
@@ -112,6 +112,8 @@ class MainWindow(tk.Tk):
         print("Modifier une station")
 
     def __init__(self):
+        self.bus_network_stations = BusNetworkStations()
+
         super().__init__()
 
         self.geometry("720x350")

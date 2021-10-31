@@ -6,7 +6,7 @@ class BusNetworkStations(object):
     def __init__(self):
         self.stations = list()
 
-    def __init__(self, stations):
+    def set_stations(self, stations):
         self.stations = stations
     
     def create_station(self, id, nom, x_position, y_position, next_stations):
@@ -19,3 +19,16 @@ class BusNetworkStations(object):
     def print_all_stations(self):
         for s in self.stations:
             print(s.to_string())
+
+    def get_all_station_names(self):
+        station_names = list()
+
+        for s in self.stations:
+            station_names.append(s.nom)
+
+        return station_names
+
+    def get_station_by_name(self, name):
+        for s in self.stations:
+            if name == s.nom:
+                return int(s.id)
