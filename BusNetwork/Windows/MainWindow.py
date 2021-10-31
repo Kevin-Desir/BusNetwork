@@ -81,8 +81,6 @@ class MainWindow(tk.Tk):
                 8: [29, 29]
             }
 
-        s_1 = Station(0, "Les Andelys", 0, 0, next_stations_0)
-
         stations = [
             Station(0, "Les Andelys", 0, 0, next_stations_0),
             Station(1, "Bolbec", 0, 0, next_stations_1),
@@ -95,10 +93,10 @@ class MainWindow(tk.Tk):
             Station(8, "Rouen", 0, 0, next_stations_8),
             Station(9, "Jumièges", 0, 0, next_stations_9)
         ]
+        
+        self.bus_network_stations = BusNetworkStations(stations)
 
-        bus_network = BusNetworkStations(stations)
-
-        for s in bus_network.stations:
+        for s in self.bus_network_stations.stations:
             print(s.to_string())
 
         BusNetworkProcessing.calculate_trip(8, 5, stations, 0)
@@ -106,7 +104,6 @@ class MainWindow(tk.Tk):
     def add_station(self):
         print("Ajouter une station")
         add_station_window = AddStationWindow(self)
-        print(add_station_window.intensiteentry.get())
 
     def remove_station(self):
         print("Supprimer une station")
@@ -236,3 +233,4 @@ class MainWindow(tk.Tk):
 
         # display the window
         self.mainloop()
+
