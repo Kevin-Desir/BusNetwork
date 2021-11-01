@@ -5,6 +5,9 @@ class AddNextStationWindow(object):
     """description of class"""
 
     def add_next_station_pressed(self):
+        if len(self.entry_distance.get()) == 0: return;
+        if len(self.entry_travel_time.get()) == 0: return;
+
         try:
             #print(self.combo_station_names.current(), self.combo_station_names.get())
             #print(self.entry_distance.get())

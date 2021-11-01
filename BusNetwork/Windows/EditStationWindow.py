@@ -138,8 +138,8 @@ class EditStationWindow(object):
 
         self.listbox_arrive_stations.bind('<<ListboxSelect>>', self.on_arrive_station_selected)
 
-        self.button_update_station = ttk.Button(self.window, text="Appliquer", command=lambda: self.update_station_button_pressed())
-        self.button_update_station.grid(row=4, column=0, sticky=tk.NSEW, padx=15, pady=15)
+        #self.button_update_station = ttk.Button(self.window, text="Appliquer", command=lambda: self.update_station_button_pressed())
+        #self.button_update_station.grid(row=4, column=0, sticky=tk.NSEW, padx=15, pady=15)
 
         self.button_close_window = ttk.Button(self.window, text="Fermer", command=lambda: self.on_close_window_pressed())
         self.button_close_window.grid(row=4, column=1, sticky=tk.NSEW, padx=15, pady=15)

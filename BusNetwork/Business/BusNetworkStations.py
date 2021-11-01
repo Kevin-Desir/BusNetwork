@@ -40,3 +40,6 @@ class BusNetworkStations(object):
         for s in self.stations:
             if name == s.nom:
                 return s
+
+    def get_count(self):
+        return len(self.stations)

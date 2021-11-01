@@ -16,7 +16,7 @@ business_dir = os.path.join( script_dir, '..', 'Business' )
 sys.path.append( business_dir )
 from BusNetworkStations import BusNetworkStations
 from Station import Station
-import BusNetworkProcessing
+from BusNetworkProcessing import BusNetworkProcessing
 
 from Windows.AddStationWindow import AddStationWindow
 from Windows.EditStationWindow import EditStationWindow
@@ -37,10 +37,11 @@ class MainWindow(tk.Tk):
             start_station_id = self.bus_network_stations.get_station_id_by_name(self.combo_station_names_start.get())
             arrive_station_id = self.bus_network_stations.get_station_id_by_name(self.combo_station_names_arrive.get())
 
-            BusNetworkProcessing.calculate_trip(start_station_id, arrive_station_id, self.bus_network_stations.get_all_stations(), 0)
+            self.bus_network_processing.calculate_both_trips(start_station_id, arrive_station_id, self.bus_network_stations.get_all_stations())
 
-        except:
+        except Exception as e:
             print("Problème dans le nom des stations")
+            print(e)
         
     def add_station(self):
         print("Ajouter une station")
@@ -55,7 +56,7 @@ class MainWindow(tk.Tk):
 
     def __init__(self):
         self.bus_network_stations = BusNetworkStations()
-        
+        self.bus_network_processing = BusNetworkProcessing()
 
 
 

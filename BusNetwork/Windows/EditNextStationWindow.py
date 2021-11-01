@@ -6,10 +6,14 @@ class EditNextStationWindow(object):
 
     def update_next_station_pressed(self):
         print("Mettre à jour la prochaine station")
+        if len(self.entry_distance.get()) == 0: return;
+        if len(self.entry_travel_time.get()) == 0: return;
+
         try:
             self.root.next_stations_names[self.station_editing_name] = [int(self.entry_distance.get()), int(self.entry_travel_time.get())]
         except:
             self.root.next_stations[self.station_editing_id] = [int(self.entry_distance.get()), int(self.entry_travel_time.get())]
+        self.window.destroy()
             
     def close_window_pressed(self):
         self.window.destroy()

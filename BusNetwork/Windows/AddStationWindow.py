@@ -21,8 +21,13 @@ from Windows.EditNextStationWindow import EditNextStationWindow
 
 class AddStationWindow(object):
     def add_station_button_pressed(self):
+        if len(self.entry_station_name.get()) == 0: return;
+
         try:
-            s_id = int(self.entry_station_id.get())
+            if len(self.entry_station_id.get()) > 0:
+                s_id = int(self.entry_station_id.get())
+            else:
+                s_id = self.root.bus_network_stations.get_count()
 
             n_stations = dict()
             n_keys = self.next_stations_names.keys()
@@ -30,7 +35,7 @@ class AddStationWindow(object):
             for k in n_keys:
                 n_id = self.root.bus_network_stations.get_station_id_by_name(k)
                 n_distance = self.next_stations_names[k][0]
-                n_travel_time = self.next_stations_names[k][0]
+                n_travel_time = self.next_stations_names[k][1]
 
                 n_stations[n_id] = [n_distance, n_travel_time]
 

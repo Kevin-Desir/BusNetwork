@@ -30,6 +30,9 @@
     <Compile Include="Business\Station.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Business\Trip.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="BusNetwork.py" />
     <Compile Include="Tests\BusNetworkProcessingTests.py">
       <SubType>Code</SubType>
