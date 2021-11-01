@@ -23,19 +23,29 @@ class AddStationWindow(object):
         try:
             s_id = int(self.entry_station_id.get())
 
-            next_stations_10 = {
-                    7: [76, 76],
-                    1: [40, 40],
-                    5: [69, 69],
-                    2: [32, 32],
-                    8: [29, 29]
-                }
-            s = Station(s_id, self.entry_station_name.get(), 0, 0, next_stations_10)
+            n_stations = dict()
+            n_keys = self.next_stations.keys()
+
+            for k in n_keys:
+                n_id = self.root.bus_network_stations.get_station_by_name(k)
+                n_distance = self.next_stations[k][0]
+                n_travel_time = self.next_stations[k][0]
+
+                n_stations[n_id] = [n_distance, n_travel_time]
+
+            s = Station(s_id, self.entry_station_name.get(), 0, 0, self.next_stations)
 
             self.root.bus_network_stations.add_station(s)
             self.root.bus_network_stations.print_all_stations()
-        except:
-            print("Format du nombre invalide : ID de la station.")
+
+            self.entry_station_id.delete(0,tk.END)
+            self.entry_station_id.insert(0,"")
+            self.entry_station_name.delete(0,tk.END)
+            self.entry_station_name.insert(0,"")
+            self.listbox_arrive_stations.delete(0,tk.END)
+            self.next_stations = dict()
+        except Exception as e:
+            print(e)
 
     def on_arrive_station_selected(self, event):
         selection = event.widget.curselection()

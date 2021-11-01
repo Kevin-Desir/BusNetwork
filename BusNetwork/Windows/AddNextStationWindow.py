@@ -23,6 +23,10 @@ class AddNextStationWindow(object):
 
                 print(self.root.next_stations)
 
+                self.entry_distance.delete(0,tk.END)
+                self.entry_distance.insert(0,"")
+                self.entry_travel_time.delete(0,tk.END)
+                self.entry_travel_time.insert(0,"")
 
         except Exception as e:
             print("Fromat des nombres invalide")
@@ -56,9 +60,13 @@ class AddNextStationWindow(object):
 
         print(self.root.root.bus_network_stations.get_all_station_names())
 
-        self.combo_station_names = ttk.Combobox(self.window, values=self.root.root.bus_network_stations.get_all_station_names())
+        self.combo_station_names = ttk.Combobox(self.window, state="readonly", values=self.root.root.bus_network_stations.get_all_station_names())
         self.combo_station_names.grid(column=0, row=0, columnspan=3, padx=15, pady=25, sticky=tk.EW)
-        self.combo_station_names.current(0)
+        
+        try:
+            self.combo_station_names.current(0)
+        except:
+            print("Aucune station n'existe")
 
         self.label_distance = ttk.Label(self.window, text="Distance")
         self.label_distance.grid(row=1, column=0, sticky=tk.SE, padx=5, pady=5)

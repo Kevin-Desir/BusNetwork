@@ -31,7 +31,33 @@ class MainWindow(tk.Tk):
 
     def calculate_trip(self):
         print("Calculer le trajet le plus court et le plus rapide")
+        
+        try:
+            start_station_id = self.bus_network_stations.get_station_by_name(self.combo_station_names_start.get())
+            arrive_station_id = self.bus_network_stations.get_station_by_name(self.combo_station_names_arrive.get())
 
+            BusNetworkProcessing.calculate_trip(start_station_id, arrive_station_id, self.bus_network_stations.get_all_stations(), 0)
+
+        except:
+            print("Problème dans le nom des stations")
+        
+    def add_station(self):
+        print("Ajouter une station")
+        add_station_window = AddStationWindow(self)
+
+    def remove_station(self):
+        print("Supprimer une station")
+
+    def edit_station(self):
+        print("Modifier une station")
+
+    def __init__(self):
+        self.bus_network_stations = BusNetworkStations()
+        
+
+
+
+        # DEBUG ONLY
         next_stations_0 = {
                 3: [35, 35],
                 2: [42, 42],
@@ -99,20 +125,9 @@ class MainWindow(tk.Tk):
         for s in self.bus_network_stations.stations:
             print(s.to_string())
 
-        BusNetworkProcessing.calculate_trip(8, 5, stations, 0)
+        # END OF DEBUG ONLY
 
-    def add_station(self):
-        print("Ajouter une station")
-        add_station_window = AddStationWindow(self)
 
-    def remove_station(self):
-        print("Supprimer une station")
-
-    def edit_station(self):
-        print("Modifier une station")
-
-    def __init__(self):
-        self.bus_network_stations = BusNetworkStations()
 
         super().__init__()
 
@@ -144,17 +159,26 @@ class MainWindow(tk.Tk):
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=0)
 
-        label_username = ttk.Label(self, text="Station de départ")
-        label_username.grid(row=1, column=0, sticky=tk.E, padx=5, pady=5)
+        label_start_station = ttk.Label(self, text="Station de départ")
+        label_start_station.grid(row=1, column=0, sticky=tk.E, padx=5, pady=5)
 
         entry_username = ttk.Entry(self)
-        entry_username.grid(row=1, column=1, sticky=tk.W, padx=5, pady=5)
+        self.combo_station_names_start = ttk.Combobox(self, state="readonly", values=self.bus_network_stations.get_all_station_names())
+        self.combo_station_names_start.grid(row=1, column=1, sticky=tk.W, padx=5, pady=5)
+        try:
+            self.combo_station_names_start.current(0)
+        except:
+            print("Aucune station n'existe")
 
-        label_username = ttk.Label(self, text="Station d'arrivée")
-        label_username.grid(row=1, column=3, sticky=tk.E, padx=5, pady=5)
+        label_arrive_station = ttk.Label(self, text="Station d'arrivée")
+        label_arrive_station.grid(row=1, column=3, sticky=tk.E, padx=5, pady=5)
 
-        entry_username = ttk.Entry(self)
-        entry_username.grid(row=1, column=4, sticky=tk.W, padx=5, pady=5)
+        self.combo_station_names_arrive = ttk.Combobox(self, state="readonly", values=self.bus_network_stations.get_all_station_names())
+        self.combo_station_names_arrive.grid(row=1, column=4, sticky=tk.W, padx=5, pady=5)
+        try:
+            self.combo_station_names_arrive.current(0)
+        except:
+            print("Aucune station n'existe")
 
         button_calculate_trip = ttk.Button(self, text="Calculer trajet", command=lambda: self.calculate_trip())
         button_calculate_trip.grid(row=1, column=6, sticky=tk.NSEW, padx=5, pady=5)
