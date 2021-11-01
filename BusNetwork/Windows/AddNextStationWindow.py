@@ -11,22 +11,36 @@ class AddNextStationWindow(object):
             #print(self.entry_travel_time.get())
 
             n_name = self.combo_station_names.get()
-            n_id = self.root.root.bus_network_stations.get_station_by_name(self.combo_station_names.get())
+            n_id = self.root.root.bus_network_stations.get_station_id_by_name(self.combo_station_names.get())
             n_distance = int(self.entry_distance.get())
             n_travel_time = int(self.entry_travel_time.get())
 
-            if n_name in self.root.next_stations:
-                print("Cette destination existe déjà")
-            else:
-                self.root.next_stations[n_name] = [n_distance, n_travel_time]
-                self.root.listbox_arrive_stations.insert(self.root.listbox_arrive_stations.size(), self.combo_station_names.get())
+            try:
+                if n_name in self.root.next_stations_names:
+                    print("Cette destination existe déjà")
+                else:
+                    self.root.next_stations_names[n_name] = [n_distance, n_travel_time]
+                    self.root.listbox_arrive_stations.insert(self.root.listbox_arrive_stations.size(), self.combo_station_names.get())
 
-                print(self.root.next_stations)
+                    print(self.root.next_stations_names)
 
-                self.entry_distance.delete(0,tk.END)
-                self.entry_distance.insert(0,"")
-                self.entry_travel_time.delete(0,tk.END)
-                self.entry_travel_time.insert(0,"")
+                    self.entry_distance.delete(0,tk.END)
+                    self.entry_distance.insert(0,"")
+                    self.entry_travel_time.delete(0,tk.END)
+                    self.entry_travel_time.insert(0,"")
+            except:
+                if n_id in self.root.next_stations:
+                    print("Cette destination existe déjà")
+                else:
+                    self.root.next_stations[n_id] = [n_distance, n_travel_time]
+                    self.root.listbox_arrive_stations.insert(self.root.listbox_arrive_stations.size(), self.combo_station_names.get())
+
+                    print(self.root.next_stations)
+
+                    self.entry_distance.delete(0,tk.END)
+                    self.entry_distance.insert(0,"")
+                    self.entry_travel_time.delete(0,tk.END)
+                    self.entry_travel_time.insert(0,"")
 
         except Exception as e:
             print("Fromat des nombres invalide")
@@ -43,7 +57,7 @@ class AddNextStationWindow(object):
 
         self.window = tk.Toplevel(self.root.root)
 
-        self.window.title("Ajout de prochaines stations")
+        self.window.title("Ajout de station suivante")
     
         self.window.grab_set() # rendre la fenêtre modale
 

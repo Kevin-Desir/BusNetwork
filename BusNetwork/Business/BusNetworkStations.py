@@ -28,10 +28,15 @@ class BusNetworkStations(object):
 
         return station_names
 
-    def get_station_by_name(self, name):
+    def get_station_id_by_name(self, name):
         for s in self.stations:
             if name == s.nom:
                 return int(s.id)
 
     def get_all_stations(self):
         return self.stations
+
+    def get_station_by_name(self, name):
+        for s in self.stations:
+            if name == s.nom:
+                return s

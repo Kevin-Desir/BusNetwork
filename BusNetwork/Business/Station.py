@@ -12,4 +12,4 @@ class Station(object):
 
     def to_string(self):
         """ To easily print the state of the station. """
-        return "{0} : {1} ({2};{3}){4}".format(self.id, self.nom, self.x_position, self.y_position, self.next_stations)
+        return "{0} : {1} ({2};{3}) {4}".format(self.id, self.nom, self.x_position, self.y_position, self.next_stations)

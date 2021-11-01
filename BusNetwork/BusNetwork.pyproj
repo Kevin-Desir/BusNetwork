@@ -40,6 +40,9 @@
     <Compile Include="Windows\AddStationWindow.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Windows\EditNextStationWindow.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Windows\EditStationWindow.py">
       <SubType>Code</SubType>
     </Compile>

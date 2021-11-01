@@ -17,6 +17,7 @@ sys.path.append( business_dir )
 from Station import Station
 
 from Windows.AddNextStationWindow import AddNextStationWindow
+from Windows.EditNextStationWindow import EditNextStationWindow
 
 class AddStationWindow(object):
     def add_station_button_pressed(self):
@@ -24,16 +25,16 @@ class AddStationWindow(object):
             s_id = int(self.entry_station_id.get())
 
             n_stations = dict()
-            n_keys = self.next_stations.keys()
+            n_keys = self.next_stations_names.keys()
 
             for k in n_keys:
-                n_id = self.root.bus_network_stations.get_station_by_name(k)
-                n_distance = self.next_stations[k][0]
-                n_travel_time = self.next_stations[k][0]
+                n_id = self.root.bus_network_stations.get_station_id_by_name(k)
+                n_distance = self.next_stations_names[k][0]
+                n_travel_time = self.next_stations_names[k][0]
 
                 n_stations[n_id] = [n_distance, n_travel_time]
 
-            s = Station(s_id, self.entry_station_name.get(), 0, 0, self.next_stations)
+            s = Station(s_id, self.entry_station_name.get(), 0, 0, n_stations)
 
             self.root.bus_network_stations.add_station(s)
             self.root.bus_network_stations.print_all_stations()
@@ -43,16 +44,22 @@ class AddStationWindow(object):
             self.entry_station_name.delete(0,tk.END)
             self.entry_station_name.insert(0,"")
             self.listbox_arrive_stations.delete(0,tk.END)
-            self.next_stations = dict()
+            self.next_stations_names = dict()
         except Exception as e:
             print(e)
 
     def on_arrive_station_selected(self, event):
-        selection = event.widget.curselection()
-        index = selection[0]
-        data = event.widget.get(index)
+        try :
+            selection = event.widget.curselection()
+            index = selection[0]
+            data = event.widget.get(index)
         
-        print(str(index) + " -> " + data)    
+            print(str(index) + " -> " + data)    
+
+            edit_next_station_window = EditNextStationWindow(self, self.root.bus_network_stations.get_station_id_by_name(data), data)
+        except Exception as e:
+            print("Problème avec la station sélectionnée dans la liste")
+            print(e)
 
     def add_arrive_station_pressed(self):
         add_next_station_window = AddNextStationWindow(self)
@@ -114,7 +121,7 @@ class AddStationWindow(object):
         self.listbox_arrive_stations.grid(row=0, column=0, sticky=tk.NSEW)
         self.scrollbar_y['command'] = self.listbox_arrive_stations.yview
 
-        self.next_stations = dict()
+        self.next_stations_names = dict()
 
         self.listbox_arrive_stations.bind('<<ListboxSelect>>', self.on_arrive_station_selected)
 

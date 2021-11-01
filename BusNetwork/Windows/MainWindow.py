@@ -19,6 +19,7 @@ from Station import Station
 import BusNetworkProcessing
 
 from Windows.AddStationWindow import AddStationWindow
+from Windows.EditStationWindow import EditStationWindow
 
 class MainWindow(tk.Tk):
     """description of class"""
@@ -33,8 +34,8 @@ class MainWindow(tk.Tk):
         print("Calculer le trajet le plus court et le plus rapide")
         
         try:
-            start_station_id = self.bus_network_stations.get_station_by_name(self.combo_station_names_start.get())
-            arrive_station_id = self.bus_network_stations.get_station_by_name(self.combo_station_names_arrive.get())
+            start_station_id = self.bus_network_stations.get_station_id_by_name(self.combo_station_names_start.get())
+            arrive_station_id = self.bus_network_stations.get_station_id_by_name(self.combo_station_names_arrive.get())
 
             BusNetworkProcessing.calculate_trip(start_station_id, arrive_station_id, self.bus_network_stations.get_all_stations(), 0)
 
@@ -50,6 +51,7 @@ class MainWindow(tk.Tk):
 
     def edit_station(self):
         print("Modifier une station")
+        edit_station_window = EditStationWindow(self)
 
     def __init__(self):
         self.bus_network_stations = BusNetworkStations()
