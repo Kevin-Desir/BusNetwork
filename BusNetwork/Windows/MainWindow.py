@@ -34,13 +34,25 @@ class MainWindow(tk.Tk):
         print("Calculer le trajet le plus court et le plus rapide")
         
         try:
+            self.listbox_trip_steps.delete(0, tk.END)
             start_station_id = self.bus_network_stations.get_station_id_by_name(self.combo_station_names_start.get())
             arrive_station_id = self.bus_network_stations.get_station_id_by_name(self.combo_station_names_arrive.get())
 
-            self.bus_network_processing.calculate_both_trips(start_station_id, arrive_station_id, self.bus_network_stations.get_all_stations())
+            self.trip = self.bus_network_processing.calculate_both_trips(start_station_id, arrive_station_id, self.bus_network_stations.get_all_stations())
 
+            if self.trip.fastest_trip_travel_time == -1: 
+                self.label_best_travel_time_tt["text"] = ""
+                self.label_best_length_l["text"] = ""
+                self.label_best_length_tt["text"] = ""
+                self.label_best_travel_time_l["text"] = ""
+                return
+
+            self.label_best_travel_time_tt["text"] = self.trip.fastest_trip_travel_time
+            self.label_best_length_l["text"] = self.trip.shortest_trip_length
+            self.label_best_length_tt["text"] = self.trip.shortest_trip_travel_time
+            self.label_best_travel_time_l["text"] = self.trip.fastest_trip_length
         except Exception as e:
-            print("Problème dans le nom des stations")
+            print("Problème dans le calcul du trajet")
             print(e)
         
     def add_station(self):
@@ -53,6 +65,26 @@ class MainWindow(tk.Tk):
     def edit_station(self):
         print("Modifier une station")
         edit_station_window = EditStationWindow(self)
+
+    def show_shortest_trip_steps(self):
+        try:
+            print("MOntrer le trjet le plus court")
+            self.listbox_trip_steps.delete(0, tk.END)
+            for step in self.trip.shortest_trip:
+                print(self.bus_network_stations.get_all_stations()[step].nom)
+                self.listbox_trip_steps.insert(self.listbox_trip_steps.size(), self.bus_network_stations.get_all_stations()[step].nom)
+        except:
+            print("Impossible de montrer le trajet")
+
+    def show_fastest_trip_steps(self):
+        try:
+            print("Montrer le trajet le plus rapide")
+            self.listbox_trip_steps.delete(0, tk.END)
+            for step in self.trip.fastest_trip:
+                print(self.bus_network_stations.get_all_stations()[step].nom)
+                self.listbox_trip_steps.insert(self.listbox_trip_steps.size(), self.bus_network_stations.get_all_stations()[step].nom)
+        except:
+            print("Impossible de montrer le trajet")
 
     def __init__(self):
         self.bus_network_stations = BusNetworkStations()
@@ -221,18 +253,18 @@ class MainWindow(tk.Tk):
 
         label_best_travel_time = ttk.Label(frame_result, text="Meilleur temps :", style="Blue.TLabel")
         label_best_travel_time.grid(row=1, column=0, sticky=tk.W, padx=5, pady=5)
-
+        
         label_best_travel_time = ttk.Label(frame_result, text="Distance totale :", style="Black.TLabel")
         label_best_travel_time.grid(row=3, column=0, sticky=tk.SW, padx=15, pady=5)
 
-        label_best_travel_time = ttk.Label(frame_result, text="3,2 km", style="Black.TLabel")
-        label_best_travel_time.grid(row=4, column=0, sticky=tk.NW, padx=15, pady=5)
+        self.label_best_travel_time_l = ttk.Label(frame_result, style="Black.TLabel")
+        self.label_best_travel_time_l.grid(row=4, column=0, sticky=tk.NW, padx=15, pady=5)
 
         label_best_travel_time = ttk.Label(frame_result, text="Temps total :", style="Black.TLabel")
         label_best_travel_time.grid(row=6, column=0, sticky=tk.SW, padx=15, pady=5)
 
-        label_best_travel_time = ttk.Label(frame_result, text="23 min", style="Black.TLabel")
-        label_best_travel_time.grid(row=7, column=0, sticky=tk.NW, padx=15, pady=5)
+        self.label_best_travel_time_tt = ttk.Label(frame_result, text="", style="Black.TLabel")
+        self.label_best_travel_time_tt.grid(row=7, column=0, sticky=tk.NW, padx=15, pady=5)
 
         label_best_travel_time = ttk.Label(frame_result, text="Meilleur distance :", style="Orange.TLabel")
         label_best_travel_time.grid(row=9, column=0, sticky=tk.W, padx=5, pady=5)
@@ -240,21 +272,43 @@ class MainWindow(tk.Tk):
         label_best_travel_time = ttk.Label(frame_result, text="Distance totale :", style="Black.TLabel")
         label_best_travel_time.grid(row=11, column=0, sticky=tk.SW, padx=15, pady=5)
 
-        label_best_travel_time = ttk.Label(frame_result, text="2,9 km", style="Black.TLabel")
-        label_best_travel_time.grid(row=12, column=0, sticky=tk.NW, padx=15, pady=5)
-
+        self.label_best_length_l = ttk.Label(frame_result, text="", style="Black.TLabel")
+        self.label_best_length_l.grid(row=12, column=0, sticky=tk.NW, padx=15, pady=5)
+        
         label_best_travel_time = ttk.Label(frame_result, text="Temps total :", style="Black.TLabel")
         label_best_travel_time.grid(row=14, column=0, sticky=tk.SW, padx=15, pady=5)
 
-        label_best_travel_time = ttk.Label(frame_result, text="27 min", style="Black.TLabel")
-        label_best_travel_time.grid(row=15, column=0, sticky=tk.NW, padx=15, pady=5)
+        self.label_best_length_tt = ttk.Label(frame_result, style="Black.TLabel")
+        self.label_best_length_tt.grid(row=15, column=0, sticky=tk.NW, padx=15, pady=5)
 
 
         
-        frame_show_trip = ttk.Frame(self, style="My.TFrame")
-        frame_show_trip.grid(row=0, column=0, columnspan=6, sticky=tk.NSEW, padx=5, pady=5)
-        frame_show_trip.rowconfigure(0, weight=1)
-        frame_show_trip.columnconfigure(0, weight=1)
+        self.frame_show_trip = ttk.Frame(self, style="My.TFrame")
+        self.frame_show_trip.grid(row=0, column=0, columnspan=6, sticky=tk.NSEW, padx=5, pady=5)
+        self.frame_show_trip.rowconfigure(0, weight=1)
+        self.frame_show_trip.rowconfigure(1, weight=1)
+        self.frame_show_trip.columnconfigure(0, weight=0)
+        self.frame_show_trip.columnconfigure(1, weight=1)
+
+        self.button_shortest = ttk.Button(self.frame_show_trip, text="Afficher trajet le plus court", command=lambda: self.show_shortest_trip_steps())
+        self.button_shortest.grid(row=1, column=0, sticky=tk.NSEW, padx=15, pady=15)
+
+        self.button_fastest = ttk.Button(self.frame_show_trip, text="Afficher trajet le plus rapide", command=lambda: self.show_fastest_trip_steps())
+        self.button_fastest.grid(row=0, column=0, sticky=tk.NSEW, padx=15, pady=15)
+            
+        self.frame_trip_steps = ttk.Frame(self.frame_show_trip)
+        self.frame_trip_steps.grid(row=0, rowspan=2, column=1, sticky=tk.NSEW, padx=25,pady=25)
+
+        self.frame_trip_steps.rowconfigure(0, weight=1)
+        self.frame_trip_steps.columnconfigure(0, weight=1)
+        self.frame_trip_steps.columnconfigure(1, weight=0)
+
+        self.scrollbar_y = ttk.Scrollbar(self.frame_trip_steps, orient='vertical')
+        self.scrollbar_y.grid(row=0, column=1, sticky=tk.NS)
+
+        self.listbox_trip_steps = tk.Listbox(self.frame_trip_steps, yscrollcommand=self.scrollbar_y.set)
+        self.listbox_trip_steps.grid(row=0, column=0, sticky=tk.NSEW)
+        self.scrollbar_y['command'] = self.listbox_trip_steps.yview
 
 #        label_test = ttk.Label(frame_show_trip, text="Meilleur temps :", style="Blue.TLabel")
 #        label_test.grid(row=0, column=0, sticky=tk.NSEW, padx=5, pady=5)
