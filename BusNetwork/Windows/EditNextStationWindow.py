@@ -21,6 +21,27 @@ class EditNextStationWindow(object):
     def delete_next_station_pressed(self):
         print("Supprimer la station")
 
+        try:
+            self.root.next_stations_names.pop(self.station_editing_name)
+        except:
+            self.root.next_stations.pop(self.station_editing_id)
+
+       # self.root.listbox_arrive_stations.insert(self.root.listbox_arrive_stations.size(), self.combo_station_names.get())
+        for i in range(0, self.root.listbox_arrive_stations.size()):
+            if self.root.listbox_arrive_stations.get(i) == self.station_editing_name:
+                print(i)
+                print(self.root.listbox_arrive_stations.get(i))
+                self.root.listbox_arrive_stations.delete(i)
+                break
+
+        try:
+            print(self.root.next_stations_names)
+        except:
+            print(self.root.next_stations)
+            
+        self.window.destroy()
+
+
     def __init__(self, root, station_editing_id, station_editing_name):
         self.root = root
         self.station_editing_id = station_editing_id
@@ -76,7 +97,9 @@ class EditNextStationWindow(object):
         self.button_add = ttk.Button(self.window, text="Appliquer", command=lambda: self.update_next_station_pressed())
         self.button_add.grid(row=3, column=0, columnspan=1, sticky=tk.E, padx=15, pady=15)
 
-        self.button_delete = ttk.Button(self.window, text="Supprimer", command=lambda: self.delete_next_station_pressed())
+        #self.style_delete_button = ttk.Style(self.window)
+        #self.style_delete_button.configure("Red.TButton", background="red", foreground="red")
+        self.button_delete = tk.Button(self.window, text="Supprimer", bg="red", fg="white", command=lambda: self.delete_next_station_pressed())
         self.button_delete.grid(row=3, column=1, sticky=tk.NS, padx=15, pady=15)
 
         self.button_close = ttk.Button(self.window, text="Fermer", command=lambda: self.close_window_pressed())

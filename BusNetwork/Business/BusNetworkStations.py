@@ -43,3 +43,6 @@ class BusNetworkStations(object):
 
     def get_count(self):
         return len(self.stations)
+
+    def delete_last_station(self):
+        self.stations.pop()

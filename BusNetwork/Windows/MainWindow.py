@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter.messagebox import showerror
 
 import os
 import sys
@@ -21,14 +22,34 @@ from BusNetworkProcessing import BusNetworkProcessing
 from Windows.AddStationWindow import AddStationWindow
 from Windows.EditStationWindow import EditStationWindow
 
+dataio_dir = os.path.join( script_dir, '..', 'DataIO')
+sys.path.append( dataio_dir )
+import FileIO
+
 class MainWindow(tk.Tk):
     """description of class"""
 
+    def set_mainwindow_combobox(self):
+        self.combo_station_names_start["values"] = self.bus_network_stations.get_all_station_names()
+        try:
+            self.combo_station_names_start.current(0)
+        except:
+            print("Aucune station n'existe")
+
+        self.combo_station_names_arrive["values"] = self.bus_network_stations.get_all_station_names()
+        try:
+            self.combo_station_names_arrive.current(0)
+        except:
+            print("Aucune station n'existe")
+
     def import_json(self):
         print("Importer un fichier JSON")
+        self.bus_network_stations = FileIO.read_bus_network_from_json()
+        self.set_mainwindow_combobox()
 
     def export_json(self):
         print("Exporter un fichier JSON")
+        FileIO.write_bus_network_to_json(self.bus_network_stations)
 
     def calculate_trip(self):
         print("Calculer le trajet le plus court et le plus rapide")
@@ -53,8 +74,14 @@ class MainWindow(tk.Tk):
             self.label_best_travel_time_l["text"] = self.trip.fastest_trip_length
         except Exception as e:
             print("Problème dans le calcul du trajet")
+            self.trip = None
+            self.label_best_travel_time_tt["text"] = ""
+            self.label_best_length_l["text"] = ""
+            self.label_best_length_tt["text"] = ""
+            self.label_best_travel_time_l["text"] = ""
             print(e)
-        
+            showerror("Erreur", "Problème dans le calcul du trajet : Un chemin entre la station de départ et celle d'arrivée n'existe pas.")
+
     def add_station(self):
         print("Ajouter une station")
         add_station_window = AddStationWindow(self)
@@ -93,72 +120,72 @@ class MainWindow(tk.Tk):
 
 
         # DEBUG ONLY
-        next_stations_0 = {
-                3: [35, 35],
-                2: [42, 42],
-                8: [40, 40]
-            }
-        next_stations_1 = {
-                9: [40, 40],
-                7: [35, 35],
-                4: [32, 32],
-                5: [27, 27]
-            }
-        next_stations_2 = {
-                3: [43, 43],
-                0: [42, 42],
-                6: [9, 9],
-                9: [32, 32]
-            }
-        next_stations_3 = {
-                2: [43, 43],
-                0: [35, 35]
-            }
-        next_stations_4 = {
-                1: [32, 32]
-            }
-        next_stations_5 = {
-                1: [27, 27],
-                9: [69, 69]
-            }
-        next_stations_6 = {
-                2: [9, 9],
-                8: [19, 19]
-            }
-        next_stations_7 = {
-                1: [35, 35],
-                9: [76, 76]
-            }
-        next_stations_8 = {
-                0: [40, 40],
-                6: [19, 19],
-                9: [29, 29]
-            }
-        next_stations_9 = {
-                7: [76, 76],
-                1: [40, 40],
-                5: [69, 69],
-                2: [32, 32],
-                8: [29, 29]
-            }
+        #next_stations_0 = {
+        #        3: [35, 35],
+        #        2: [42, 42],
+        #        8: [40, 40]
+        #    }
+        #next_stations_1 = {
+        #        9: [40, 40],
+        #        7: [35, 35],
+        #        4: [32, 32],
+        #        5: [27, 27]
+        #    }
+        #next_stations_2 = {
+        #        3: [43, 43],
+        #        0: [42, 42],
+        #        6: [9, 9],
+        #        9: [32, 32]
+        #    }
+        #next_stations_3 = {
+        #        2: [43, 43],
+        #        0: [35, 35]
+        #    }
+        #next_stations_4 = {
+        #        1: [32, 32]
+        #    }
+        #next_stations_5 = {
+        #        1: [27, 27],
+        #        9: [69, 69]
+        #    }
+        #next_stations_6 = {
+        #        2: [9, 9],
+        #        8: [19, 19]
+        #    }
+        #next_stations_7 = {
+        #        1: [35, 35],
+        #        9: [76, 76]
+        #    }
+        #next_stations_8 = {
+        #        0: [40, 40],
+        #        6: [19, 19],
+        #        9: [29, 29]
+        #    }
+        #next_stations_9 = {
+        #        7: [76, 76],
+        #        1: [40, 40],
+        #        5: [69, 69],
+        #        2: [32, 32],
+        #        8: [29, 29]
+        #    }
 
-        stations = [
-            Station(0, "Les Andelys", 0, 0, next_stations_0),
-            Station(1, "Bolbec", 0, 0, next_stations_1),
-            Station(2, "Elbeuf", 0, 0, next_stations_2),
-            Station(3, "Evreux", 0, 0, next_stations_3),
-            Station(4, "Etretat", 0, 0, next_stations_4),
-            Station(5, "Fécamp", 0, 0, next_stations_5),
-            Station(6, "Grand-Couronne", 0, 0, next_stations_6),
-            Station(7, "Le Havre", 0, 0, next_stations_7),
-            Station(8, "Rouen", 0, 0, next_stations_8),
-            Station(9, "Jumièges", 0, 0, next_stations_9)
-        ]
+        #stations = [
+        #    Station(0, "Les Andelys", 0, 0, next_stations_0),
+        #    Station(1, "Bolbec", 0, 0, next_stations_1),
+        #    Station(2, "Elbeuf", 0, 0, next_stations_2),
+        #    Station(3, "Evreux", 0, 0, next_stations_3),
+        #    Station(4, "Etretat", 0, 0, next_stations_4),
+        #    Station(5, "Fécamp", 0, 0, next_stations_5),
+        #    Station(6, "Grand-Couronne", 0, 0, next_stations_6),
+        #    Station(7, "Le Havre", 0, 0, next_stations_7),
+        #    Station(8, "Rouen", 0, 0, next_stations_8),
+        #    Station(9, "Jumièges", 0, 0, next_stations_9)
+        #]
         
-        self.bus_network_stations.set_stations(stations)
+        #self.bus_network_stations.set_stations(stations)
 
-        for s in self.bus_network_stations.stations:
-            print(s.to_string())
+        #for s in self.bus_network_stations.stations:
+        #    print(s.to_string())
 
         # END OF DEBUG ONLY
 
@@ -197,7 +224,7 @@ class MainWindow(tk.Tk):
         label_start_station = ttk.Label(self, text="Station de départ")
         label_start_station.grid(row=1, column=0, sticky=tk.E, padx=5, pady=5)
 
-        entry_username = ttk.Entry(self)
+        #entry_username = ttk.Entry(self)
         self.combo_station_names_start = ttk.Combobox(self, state="readonly", values=self.bus_network_stations.get_all_station_names())
         self.combo_station_names_start.grid(row=1, column=1, sticky=tk.W, padx=5, pady=5)
         try:
@@ -281,8 +308,6 @@ class MainWindow(tk.Tk):
         self.label_best_length_tt = ttk.Label(frame_result, style="Black.TLabel")
         self.label_best_length_tt.grid(row=15, column=0, sticky=tk.NW, padx=15, pady=5)
 
-
-        
         self.frame_show_trip = ttk.Frame(self, style="My.TFrame")
         self.frame_show_trip.grid(row=0, column=0, columnspan=6, sticky=tk.NSEW, padx=5, pady=5)
         self.frame_show_trip.rowconfigure(0, weight=1)
@@ -296,18 +321,25 @@ class MainWindow(tk.Tk):
         self.button_fastest = ttk.Button(self.frame_show_trip, text="Afficher trajet le plus rapide", command=lambda: self.show_fastest_trip_steps())
         self.button_fastest.grid(row=0, column=0, sticky=tk.NSEW, padx=15, pady=15)
             
-        self.frame_trip_steps = ttk.Frame(self.frame_show_trip)
+
+        self.frame_trip_steps = ttk.Frame(self.frame_show_trip, style="My.TFrame")
         self.frame_trip_steps.grid(row=0, rowspan=2, column=1, sticky=tk.NSEW, padx=25,pady=25)
 
-        self.frame_trip_steps.rowconfigure(0, weight=1)
+        self.frame_trip_steps.rowconfigure(0, weight=0)
+        self.frame_trip_steps.rowconfigure(1, weight=1)
         self.frame_trip_steps.columnconfigure(0, weight=1)
         self.frame_trip_steps.columnconfigure(1, weight=0)
+        
+        self.style_frame_result = ttk.Style(self.frame_trip_steps)
+        self.style_frame_result.configure("Black.TLabel", background="white", foreground="black")
+        self.label_show_trip_steps = ttk.Label(self.frame_trip_steps, style="Black.TLabel", text="Étapes du trajet :")
+        self.label_show_trip_steps.grid(row=0, column=0, sticky=tk.NW)
 
         self.scrollbar_y = ttk.Scrollbar(self.frame_trip_steps, orient='vertical')
-        self.scrollbar_y.grid(row=0, column=1, sticky=tk.NS)
+        self.scrollbar_y.grid(row=1, column=1, sticky=tk.NS)
 
         self.listbox_trip_steps = tk.Listbox(self.frame_trip_steps, yscrollcommand=self.scrollbar_y.set)
-        self.listbox_trip_steps.grid(row=0, column=0, sticky=tk.NSEW)
+        self.listbox_trip_steps.grid(row=1, column=0, sticky=tk.NSEW)
         self.scrollbar_y['command'] = self.listbox_trip_steps.yview
 
 #        label_test = ttk.Label(frame_show_trip, text="Meilleur temps :", style="Blue.TLabel")

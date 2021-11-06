@@ -34,6 +34,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BusNetwork.py" />
+    <Compile Include="DataIO\FileIO.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Tests\BusNetworkProcessingTests.py">
       <SubType>Code</SubType>
     </Compile>

@@ -19,7 +19,7 @@ class BusNetworkProcessing(object):
                 v_list.append(stations[start_station_id].next_stations[i][type_of_search])
                 v_list_2.append(stations[start_station_id].next_stations[i][self.i_type_of_search])
                 o_dict[i] = start_station_id
-            except: 
+            except:
                 # the use of try except here is not to handle errors:
                 # if the station does not have a next_station, set it's value to inf
                 v_list.append(float('inf'))

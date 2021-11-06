@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter.messagebox import askyesno
 
 import os
 import sys
@@ -44,7 +45,14 @@ class EditStationWindow(object):
             print(e)
 
     def delete_station_button_pressed(self):
-        print("Supprimer station")
+        print("Supprimer dernière station")
+        
+        confirmation = askyesno(title="Attention", message="Attention : Vous-êtes vous assuré qu'aucune station n'a pour direction suivante la dernière station qui est sur le point d'être supprimée définitivement ?")
+        if not confirmation: return;
+
+        self.root.bus_network_stations.delete_last_station()
+        self.root.set_mainwindow_combobox()
+        self.window.destroy()
 
     def on_arrive_station_selected(self, event):
         try :
@@ -75,7 +83,10 @@ class EditStationWindow(object):
         self.next_stations = self.station_editing.next_stations
         self.listbox_arrive_stations.delete(0,tk.END)
         for s in self.next_stations:
-            self.listbox_arrive_stations.insert(self.listbox_arrive_stations.size(), self.root.bus_network_stations.get_all_stations()[s].nom)
+            try:
+                self.listbox_arrive_stations.insert(self.listbox_arrive_stations.size(), self.root.bus_network_stations.get_all_stations()[s].nom)
+            except:
+                print("Impossible de récupérer la station suivante")
 
     def __init__(self, root):
         self.root = root
@@ -86,7 +97,7 @@ class EditStationWindow(object):
     
         self.window.grab_set() # rendre la fenêtre modale
 
-        self.window.geometry("300x350")
+        self.window.geometry("330x350")
 
         self.window.rowconfigure(0, weight=1)
         self.window.rowconfigure(1, weight=1)
@@ -140,6 +151,12 @@ class EditStationWindow(object):
 
         #self.button_update_station = ttk.Button(self.window, text="Appliquer", command=lambda: self.update_station_button_pressed())
         #self.button_update_station.grid(row=4, column=0, sticky=tk.NSEW, padx=15, pady=15)
+        
+        #self.style_delete_button = ttk.Style(self.window)
+        #self.style_delete_button.configure("Red.TButton", background="red", foreground="red")
+        #self.button_delete_station = ttk.Button(self.window, text="Supprimer dernière station", style="Red.TButton", command=lambda: self.delete_station_button_pressed())
+        self.button_delete_station = tk.Button(self.window, text="Supprimer dernière station", bg="red", fg="white", command=lambda: self.delete_station_button_pressed())
+        self.button_delete_station.grid(row=4, column=0, sticky=tk.NSEW, padx=15, pady=15)
 
         self.button_close_window = ttk.Button(self.window, text="Fermer", command=lambda: self.on_close_window_pressed())
         self.button_close_window.grid(row=4, column=1, sticky=tk.NSEW, padx=15, pady=15)

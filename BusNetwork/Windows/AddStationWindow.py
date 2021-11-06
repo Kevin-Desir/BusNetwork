@@ -43,6 +43,7 @@ class AddStationWindow(object):
 
             self.root.bus_network_stations.add_station(s)
             self.root.bus_network_stations.print_all_stations()
+            self.root.set_mainwindow_combobox()
 
             self.entry_station_id.delete(0,tk.END)
             self.entry_station_id.insert(0,"")
